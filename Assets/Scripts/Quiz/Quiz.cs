@@ -8,22 +8,24 @@ namespace Quiz
 {
     public class Quiz : MonoBehaviour
     {
-        public static int IronScore => 5;
-        public static int BronzeScore => 10;
-        public static int SilverScore => 15;
-        public static int GoldScore => 20;
-        public static int PlatinumScore => 25;
-        public static int DiamondScore => 30;
-        public static int MasterScore => 35;
-        public static int GrandMasterScore => 37;
-        public static int ChallengerScore => 39;
+        public const int BRONZE_SCORE = 10;
+        public const int SILVER_SCORE = 15;
+        public const int GOLD_SCORE = 20;
+        public const int PLATINUM_SCORE = 25;
+        public const int DIAMOND_SCORE = 30;
+        public const int MASTER_SCORE = 35;
+        public const int GRAND_MASTER_SCORE = 37;
+        public const int CHALLENGER_SCORE = 39;
 
+        [SerializeField] List<QuestionSO> _questions;
+        
         QuizState _quizState;
-        
+
         public int CurrentQuestionIndex { get; set; }
-        [field : SerializeField] public List<QuestionSO> Questions { get; set; }
+
+        public List<QuestionSO> Questions => _questions;
         public List<int> Answers { get; set; } = new List<int>();
-        
+
         public Player Player { get; private set; }
         public QuizUI QuizUI { get; private set; }
 
@@ -50,33 +52,33 @@ namespace Quiz
         public void CalculateRank()
         {
             int score = 0;
+
+            if (Answers.Count != Questions.Count)
+                return;
             
             for (int i = 0; i < Questions.Count; i++)
             {
-                if (i >= Answers.Count)
-                    break;
-                
                 if (Questions[i].CorrectAnswerIndex == Answers[i])
                     score++;
             }
 
-            if (score < IronScore)
-                Player.Rank = 0;
-            if (score < BronzeScore)
+            Player.Score = score;
+            
+            if (score >= BRONZE_SCORE)
                 Player.Rank = 1; 
-            if (score < SilverScore)
+            if (score >= SILVER_SCORE)
                 Player.Rank = 2;
-            if (score < GoldScore)
+            if (score >= GOLD_SCORE)
                 Player.Rank = 3;
-            if (score < PlatinumScore)
+            if (score >= PLATINUM_SCORE)
                 Player.Rank = 4; 
-            if (score < DiamondScore)
+            if (score >= DIAMOND_SCORE)
                 Player.Rank = 5; 
-            if (score < MasterScore)
+            if (score >= MASTER_SCORE)
                 Player.Rank = 6;
-            if (score < GrandMasterScore)
+            if (score >= GRAND_MASTER_SCORE)
                 Player.Rank = 7;  
-            if (score < ChallengerScore)
+            if (score >= CHALLENGER_SCORE)
                 Player.Rank = 8;
         }
     }
